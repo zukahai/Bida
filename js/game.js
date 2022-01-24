@@ -8,6 +8,8 @@ sizeFloor = 0;
 xFl = yFl = 0;
 X = Y = W = H = 0
 rtt = false;
+dx = dy = 0;
+run = true;
 
 class game {
     constructor() {
@@ -36,6 +38,14 @@ class game {
 
     update() {
         this.ball.update();
+        if (Math.abs(this.ball.dx) + Math.abs(this.ball.dy) < 0.1) {
+            this.pool.visible = true;
+            this.pool.x = this.ball.x;
+            this.pool.y = this.ball.y;
+            run = true;
+        } else {
+            run = false;
+        }
     }
 
     draw() {
@@ -55,11 +65,13 @@ class game {
         this.pool.x = this.ball.x;
         this.pool.y = this.ball.y;
         let X = this.ball.x - x;
-        let Y = y - this.ball.y;
+        let Y = this.ball.y - y;
+        dx = X;
+        dy = Y;
         let H = Math.sqrt(X * X + Y * Y);
         let angle = Math.asin(X / H);
         angle = 180 * angle / Math.PI;
-        if (Y < 0)
+        if (Y > 0)
             angle = 180 - angle;
         // console.log(Math.floor(angle));
         this.pool.angle = angle;
@@ -67,6 +79,8 @@ class game {
 
     listenMouse() {
         document.addEventListener("mousedown", evt => {
+            if (!run)
+                return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
             rtt = true;
@@ -74,6 +88,8 @@ class game {
         })
 
         document.addEventListener("mousemove", evt => {
+            if (!run)
+                return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
             if (rtt)
@@ -82,9 +98,14 @@ class game {
         })
 
         document.addEventListener("mouseup", evt => {
+            if (!run)
+                return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
             rtt = false;
+            this.ball.dx = dx;
+            this.ball.dy = dy;
+            this.pool.visible = false;
         })
     }
 

@@ -9,9 +9,12 @@ class pool {
         this.x = x;
         this.y = y;
         this.angle = 0;
+        this.visible = true;
     }
 
     draw() {
+        if (!this.visible)
+            return;
         this.game.context.save();
         this.game.context.translate(this.x, this.y);
         this.game.context.rotate(this.toRadian(this.angle));
