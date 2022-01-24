@@ -105,7 +105,7 @@ class game {
 
             let k = Math.abs(x - this.ball.x);
             let h = Math.abs(y - this.ball.y);
-            if (x > X) {
+            if (x > X - this.ball.sizeBall * 4) {
                 rtt = true;
                 this.rotatePool(x, y);
             } else {
