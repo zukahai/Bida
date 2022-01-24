@@ -62,9 +62,9 @@ class game {
 
     drawPower() {
         this.context.fillStyle = "#36F9FF";
-        this.context.fillRect(X - 4 * this.ball.sizeBall, Y, this.ball.sizeBall, H);
+        this.context.fillRect(X - 7 * this.ball.sizeBall, Y, 2 * this.ball.sizeBall, H);
         this.context.fillStyle = "red";
-        this.context.fillRect(X - 4 * this.ball.sizeBall + 5, Y + 5, this.ball.sizeBall - 10, (power / 100) * (H - 10));
+        this.context.fillRect(X - 7 * this.ball.sizeBall + 5, Y + 5, 2 * this.ball.sizeBall - 10, (power / 100) * (H - 10));
     }
 
     clearScreen() {

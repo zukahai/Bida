@@ -4,7 +4,7 @@ ball_IM.src = "images/ball/1.png";
 class ball {
     constructor(game) {
         this.game = game;
-        this.sizeBall = sizeFloor / 14;
+        this.sizeBall = sizeFloor / 23;
         this.dx = 0;
         this.dy = 0;
         this.x = X + sizeFloor / 2;
