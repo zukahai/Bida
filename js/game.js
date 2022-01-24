@@ -8,8 +8,10 @@ sizeFloor = 0;
 xFl = yFl = 0;
 X = Y = W = H = 0
 rtt = false;
+pw = false;
 dx = dy = 0;
-run = true;
+run = false;
+power = 0;
 
 class game {
     constructor() {
@@ -24,7 +26,7 @@ class game {
         document.body.appendChild(this.canvas);
         this.render();
         this.ball = new ball(this);
-        this.pool = new pool(this, this.ball.x, this.ball.y);
+        this.pool = new pool(this, this.ball, this.ball.x, this.ball.y);
         this.loop();
         this.listenMouse();
     }
@@ -42,23 +44,33 @@ class game {
             this.pool.visible = true;
             this.pool.x = this.ball.x;
             this.pool.y = this.ball.y;
-            run = true;
-        } else {
             run = false;
+            if (!pw)
+                power = 0;
+        } else {
+            run = true;
         }
     }
 
     draw() {
         this.clearScreen();
-        this.context.drawImage(bg, 0, 0, game_W, game_H);
-        this.context.drawImage(fl, xFl, yFl, 2 * sizeFloor, sizeFloor);
         this.ball.draw();
         this.pool.draw();
-        // this.context.fillRect(this.ball.x, this.ball.y, W, H);
+        this.drawPower();
+    }
+
+    drawPower() {
+        this.context.fillStyle = "#36F9FF";
+        this.context.fillRect(X - 4 * this.ball.sizeBall, Y, this.ball.sizeBall, H);
+        this.context.fillStyle = "red";
+        this.context.fillRect(X - 4 * this.ball.sizeBall + 5, Y + 5, this.ball.sizeBall - 10, (power / 100) * (H - 10));
     }
 
     clearScreen() {
         this.context.clearRect(0, 0, game_W, game_H);
+        this.context.drawImage(bg, 0, 0, game_W, game_H);
+        this.context.drawImage(fl, xFl, yFl, 2 * sizeFloor, sizeFloor);
+        // this.context.fillRect(X, Y, W, H);
     }
 
     rotatePool(x, y) {
@@ -77,35 +89,58 @@ class game {
         this.pool.angle = angle;
     }
 
+    powerPool(x, y) {
+        if (y >= Y && y <= Y + H) {
+            power = 100 * (y - Y) / H;
+        }
+    }
+
     listenMouse() {
         document.addEventListener("mousedown", evt => {
-            if (!run)
+            if (run)
                 return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
-            rtt = true;
-            this.rotatePool(x, y);
+
+            let k = Math.abs(x - this.ball.x);
+            let h = Math.abs(y - this.ball.y);
+            if (x > X) {
+                rtt = true;
+                this.rotatePool(x, y);
+            } else {
+                pw = true;
+                this.powerPool(x, y);
+            }
         })
 
         document.addEventListener("mousemove", evt => {
-            if (!run)
+            if (run)
                 return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
             if (rtt)
                 this.rotatePool(x, y);
-
+            if (pw)
+                this.powerPool(x, y);
         })
 
         document.addEventListener("mouseup", evt => {
-            if (!run)
+            if (run)
                 return;
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
-            rtt = false;
-            this.ball.dx = dx;
-            this.ball.dy = dy;
-            this.pool.visible = false;
+            if (rtt) {
+                rtt = false;
+            }
+            if (pw) {
+                pw = false;
+                let H = Math.sqrt(dx * dx + dy * dy);
+                dx = power * dx / H;
+                dy = power * dy / H;
+                this.ball.dx = dx;
+                this.ball.dy = dy;
+                this.pool.visible = false;
+            }
         })
     }
 
