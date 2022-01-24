@@ -9,7 +9,8 @@ xFl = yFl = 0;
 X = Y = W = H = 0
 rtt = false;
 pw = false;
-dx = dy = 0;
+dx = 100;
+dy = 0;
 run = false;
 power = 0;
 
