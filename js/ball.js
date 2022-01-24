@@ -8,7 +8,7 @@ class ball {
         this.dx = 0;
         this.dy = 0;
         this.x = X + sizeFloor / 2;
-        this.y = Y + sizeFloor / 2;
+        this.y = Y + sizeFloor / 2 + this.sizeBall * 5;;
     }
 
     update() {

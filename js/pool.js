@@ -24,7 +24,7 @@ class pool {
         this.game.context.drawImage(pool_IM, -this.W / 2, this.W * 1.5 + power, this.W, this.H);
         this.game.context.restore();
 
-        let t = 100;
+        let t = 0;
         let al = Math.PI * (270 + this.angle) / 180;
         let XX = Math.cos(al) * t;
         let YY = Math.sin(al) * t;
