@@ -21,7 +21,7 @@ class pool {
         this.game.context.save();
         this.game.context.translate(this.x, this.y);
         this.game.context.rotate(this.toRadian(this.angle));
-        this.game.context.drawImage(pool_IM, -this.W / 2, this.W * 1.5, this.W, this.H);
+        this.game.context.drawImage(pool_IM, -this.W / 2, this.W * 1.5 + power, this.W, this.H);
         this.game.context.restore();
 
         let t = 100;
