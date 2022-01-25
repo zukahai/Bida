@@ -1,14 +1,13 @@
-let ball_IM = new Image();
-ball_IM.src = "images/ball/1.png";
-
 class ball {
-    constructor(game) {
+    constructor(game, type, x, y) {
+        this.ball_IM = new Image();
+        this.ball_IM.src = "images/ball/" + type + ".png";
         this.game = game;
-        this.sizeBall = sizeFloor / 23;
+        this.sizeBall = sizeFloor / 21.5;
         this.dx = 0;
         this.dy = 0;
-        this.x = X + sizeFloor / 2;
-        this.y = Y + sizeFloor / 2 + this.sizeBall * 5;;
+        this.x = x;
+        this.y = y;;
     }
 
     update() {
@@ -38,7 +37,7 @@ class ball {
     }
 
     draw() {
-        this.game.context.drawImage(ball_IM, this.x - this.sizeBall / 2, this.y - this.sizeBall / 2, this.sizeBall, this.sizeBall);
+        this.game.context.drawImage(this.ball_IM, this.x - this.sizeBall / 2, this.y - this.sizeBall / 2, this.sizeBall, this.sizeBall);
     }
 
     reduction(x, t) {

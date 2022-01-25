@@ -13,6 +13,8 @@ dx = 100;
 dy = 0;
 run = false;
 power = 0;
+Nball = 4;
+B = []
 
 class game {
     constructor() {
@@ -26,8 +28,11 @@ class game {
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
         this.render();
-        this.ball = new ball(this);
-        this.pool = new pool(this, this.ball, this.ball.x, this.ball.y);
+        B = [];
+        B[0] = new ball(this, 1, game_W / 2, game_H / 2);
+        for (let i = 1; i < Nball; i++)
+            B[i] = new ball(this, 4, X + Math.random() * W, Y + Math.random() * H);
+        this.pool = new pool(this, B[0], B[0].x, B[0].y);
         this.loop();
         this.listenMouse();
     }
@@ -40,11 +45,11 @@ class game {
     }
 
     update() {
-        this.ball.update();
-        if (Math.abs(this.ball.dx) + Math.abs(this.ball.dy) < 0.1) {
+        B[0].update();
+        if (Math.abs(B[0].dx) + Math.abs(B[0].dy) < 0.1) {
             this.pool.visible = true;
-            this.pool.x = this.ball.x;
-            this.pool.y = this.ball.y;
+            this.pool.x = B[0].x;
+            this.pool.y = B[0].y;
             run = false;
             if (!pw)
                 power = 0;
@@ -55,16 +60,21 @@ class game {
 
     draw() {
         this.clearScreen();
-        this.ball.draw();
+        this.drawBall();
         this.pool.draw();
         this.drawPower();
     }
 
+    drawBall() {
+        for (let i = 0; i < Nball; i++)
+            B[i].draw();
+    }
+
     drawPower() {
         this.context.fillStyle = "#36F9FF";
-        this.context.fillRect(X - 7 * this.ball.sizeBall, Y, 2 * this.ball.sizeBall, H);
+        this.context.fillRect(X - 7 * B[0].sizeBall, Y, 2 * B[0].sizeBall, H);
         this.context.fillStyle = "red";
-        this.context.fillRect(X - 7 * this.ball.sizeBall + 5, Y + 5, 2 * this.ball.sizeBall - 10, (power / 100) * (H - 10));
+        this.context.fillRect(X - 7 * B[0].sizeBall + 5, Y + 5, 2 * B[0].sizeBall - 10, (power / 100) * (H - 10));
     }
 
     clearScreen() {
@@ -75,10 +85,10 @@ class game {
     }
 
     rotatePool(x, y) {
-        this.pool.x = this.ball.x;
-        this.pool.y = this.ball.y;
-        let X = this.ball.x - x;
-        let Y = this.ball.y - y;
+        this.pool.x = B[0].x;
+        this.pool.y = B[0].y;
+        let X = B[0].x - x;
+        let Y = B[0].y - y;
         dx = X;
         dy = Y;
         let H = Math.sqrt(X * X + Y * Y);
@@ -103,9 +113,9 @@ class game {
             var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
             var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
 
-            let k = Math.abs(x - this.ball.x);
-            let h = Math.abs(y - this.ball.y);
-            if (x > X - this.ball.sizeBall * 4) {
+            let k = Math.abs(x - B[0].x);
+            let h = Math.abs(y - B[0].y);
+            if (x > X - B[0].sizeBall * 4) {
                 rtt = true;
                 this.rotatePool(x, y);
             } else {
@@ -138,8 +148,8 @@ class game {
                 let H = Math.sqrt(dx * dx + dy * dy);
                 dx = power * dx / H;
                 dy = power * dy / H;
-                this.ball.dx = dx;
-                this.ball.dy = dy;
+                B[0].dx = dx;
+                B[0].dy = dy;
                 this.pool.visible = false;
             }
         })
