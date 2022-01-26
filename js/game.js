@@ -4,6 +4,8 @@ let bg = new Image();
 bg.src = "images/bg.png";
 let fl = new Image();
 fl.src = "images/floor.jpg";
+let rotate_Im = new Image();
+rotate_Im.src = "images/rotate.png";
 sizeFloor = 0;
 xFl = yFl = 0;
 X = Y = W = H = 0
@@ -153,7 +155,17 @@ class game {
             }
     }
 
+    drawRotateScreen() {
+        this.context.fillStyle = "#FFFFFF";
+        this.context.fillRect(0, 0, game_W, game_H);
+        this.context.drawImage(rotate_Im, 0, (game_H - game_W) / 2, game_W, game_W);
+    }
+
     draw() {
+        if (game_W <= game_H) {
+            this.drawRotateScreen();
+            return;
+        }
         this.clearScreen();
         this.drawBall();
         this.pool.draw();
