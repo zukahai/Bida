@@ -35,6 +35,12 @@ class game {
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
         this.render();
+        this.new();
+        this.loop();
+        this.listenMouse();
+    }
+
+    new() {
         B = [];
         B[0] = new ball(this, 1, game_W / 2 - W / 3, game_H / 2);
         for (let i = 1; i < Nball; i++)
@@ -42,8 +48,6 @@ class game {
         this.pool = new pool(this, B[0], B[0].x, B[0].y);
         this.setXyTriangle();
         this.initPit();
-        this.loop();
-        this.listenMouse();
     }
 
     setXyTriangle() {
@@ -313,6 +317,7 @@ class game {
             Y = yFl + sizeFloor / 9;
             W = 1.77 * sizeFloor;
             H = 0.8 * sizeFloor;
+            this.new();
         }
     }
 
