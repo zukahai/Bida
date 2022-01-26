@@ -7,7 +7,10 @@ class ball {
         this.dx = 0;
         this.dy = 0;
         this.x = x;
-        this.y = y;;
+        this.y = y;
+        this.count = 0;
+        this.visible = true;
+        this.checkVisible = true;
     }
 
     update() {
@@ -26,10 +29,12 @@ class ball {
         if (xNext + this.sizeBall / 2 > X + W) {
             this.dx *= -this.t;
         }
-        this.x += this.dx;
-        this.y += this.dy;
-        this.dx *= 0.98;
-        this.dy *= 0.98;
+        this.x += this.dx / Nstep;
+        this.y += this.dy / Nstep;
+        if (this.count++ % Nstep == 0) {
+            this.dx *= 0.98;
+            this.dy *= 0.98;
+        }
         // if (Math.abs(this.dx) < 0.1)
         //     this.dx = 0;
         // if (Math.abs(this.dy) < 0.1)
@@ -37,6 +42,8 @@ class ball {
     }
 
     draw() {
+        if (!this.visible)
+            return;
         this.game.context.drawImage(this.ball_IM, this.x - this.sizeBall / 2, this.y - this.sizeBall / 2, this.sizeBall, this.sizeBall);
     }
 

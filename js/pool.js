@@ -8,7 +8,7 @@ class pool {
         this.game = game;
         this.ball = ball;
         this.W = sizeFloor / 30;
-        this.H = this.W * 25;
+        this.H = this.W * 35;
         this.x = x;
         this.y = y;
         this.angle = 90;
